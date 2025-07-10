@@ -36,7 +36,7 @@
     ];
     $stepKeys = array_keys($steps);
     $currentIndex = array_search($data->status, $stepKeys);
-    // Jika status tidak ditemukan, fallback ke 0 (On Review)
+    
     if ($currentIndex === false) $currentIndex = 0;
 @endphp
 
@@ -56,7 +56,7 @@
                     $statusClass = 'bg-secondary text-white';
                     $circleContent = $index + 1;
                 }
-                // Tanggal hanya untuk step yang sudah selesai
+                
                 $formattedDate = '-';
                 if ($index < $currentIndex && !empty($date) && $date !== '0000-00-00') {
                     try {
