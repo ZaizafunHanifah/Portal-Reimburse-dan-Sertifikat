@@ -1,0 +1,58 @@
+/* admin-create-form.css */
+
+.admin-create-card {
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 6px rgba(0,0,0,0.04);
+    background: #fff;
+    padding: 2.5rem 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.admin-create-card h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #222;
+}
+
+.admin-create-form label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.admin-create-form .form-control,
+.admin-create-form .form-select {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    padding: 0.9rem 1.1rem;
+    font-size: 1.05rem;
+    background: #f9f9f9;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+.admin-create-form .form-control:focus,
+.admin-create-form .form-select:focus {
+    border-color: #4caf50;
+    background: #fff;
+    box-shadow: 0 0 0 2px #e8f5e9;
+}
+
+.admin-create-form .btn-success {
+    border-radius: 8px;
+    padding: 0.7rem 2.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+    margin-top: 1.2rem;
+}
+
+@media (max-width: 600px) {
+    .admin-create-card {
+        padding: 1.2rem 0.5rem;
+    }
+}

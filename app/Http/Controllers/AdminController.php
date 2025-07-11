@@ -7,9 +7,39 @@ use App\Models\Reimburse;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reimburses = Reimburse::latest()->get();
+        $query = Reimburse::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('no_sertifikat', 'like', '%' . $request->search . '%')
+                  ->orWhere('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('jabatan', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('status') && $request->status != '' && $request->status != 'All') {
+            $query->where('status', $request->status);
+        }
+
+        // Sorting
+        if ($request->has('sort') && $request->has('order')) {
+            $query->orderBy($request->sort, $request->order);
+        } else {
+            // Custom status order
+            $query->orderByRaw("
+                FIELD(status, 
+                    'On Review', 
+                    'Diajukan ke LND', 
+                    'Diajukan ke Akuntansi', 
+                    'Diajukan ke Treasury', 
+                    'Cleared'
+                )
+            ");
+        }
+
+        $reimburses = $query->paginate(10);
         return view('admin.dashboard', compact('reimburses'));
     }
 

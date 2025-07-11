@@ -36,8 +36,11 @@
     ];
     $stepKeys = array_keys($steps);
     $currentIndex = array_search($data->status, $stepKeys);
-    
+
+    // Jika status Cleared, anggap semua step selesai
+    $isCleared = ($data->status === 'Cleared');
     if ($currentIndex === false) $currentIndex = 0;
+    if ($isCleared) $currentIndex = count($stepKeys) - 1;
 @endphp
 
 <div class="bg-light rounded p-3 mb-4 shadow-sm">
@@ -46,19 +49,19 @@
         @foreach ($steps as $step => $date)
             @php
                 $index = array_search($step, $stepKeys);
-                if ($index < $currentIndex) {
+                if ($isCleared || $index < $currentIndex) {
                     $statusClass = 'bg-success text-white';
                     $circleContent = '<i class="bi bi-check-lg"></i>';
                 } elseif ($index === $currentIndex) {
                     $statusClass = 'bg-warning text-dark';
-                    $circleContent = '<div class="spinner-border spinner-border-sm" role="status"></div>';
+                    $circleContent = '<i class="bi bi-arrow-repeat"></i>'; // logo loading statis
                 } else {
                     $statusClass = 'bg-secondary text-white';
                     $circleContent = $index + 1;
                 }
-                
+                // Tanggal hanya untuk step yang sudah selesai
                 $formattedDate = '-';
-                if ($index < $currentIndex && !empty($date) && $date !== '0000-00-00') {
+                if (($isCleared || $index < $currentIndex) && !empty($date) && $date !== '0000-00-00') {
                     try {
                         $formattedDate = \Carbon\Carbon::parse($date)->format('d F Y');
                     } catch (\Exception $e) {
