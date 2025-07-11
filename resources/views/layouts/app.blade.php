@@ -34,6 +34,23 @@
     @stack('styles')
 </head>
 <body>
+@if(View::hasSection('dashboard-navbar'))
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="{{ url('/admin') }}" class="nav-link {{ Request::is('admin') ? 'active' : '' }}">Dashboard Reimburse</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/admin/sertifikat') }}" class="nav-link {{ Request::is('admin/sertifikat*') ? 'active' : '' }}">Dashboard Sertifikat</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+@else
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">Portal</a>
@@ -46,6 +63,7 @@
         </div>
     </div>
 </nav>
+@endif
 <div class="container main-content">
     @yield('content')
 </div>

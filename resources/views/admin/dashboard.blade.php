@@ -1,4 +1,7 @@
+
 @extends('layouts.app')
+@section('dashboard-navbar')
+@endsection
 @section('title', 'Dashboard Admin')
 @section('content')
 <h2>Dashboard Reimburse</h2>
