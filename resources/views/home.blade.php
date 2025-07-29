@@ -5,11 +5,11 @@
 
 <style>
     body {
-        /* Ensure body takes full viewport and no scrollbars */
         min-height: 100vh;
         margin: 0;
         padding: 0;
     }
+
     .hero-bg {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -18,12 +18,29 @@
         background: radial-gradient(circle at top right, #e0e7ff, #f9fafb);
         z-index: -1;
     }
+
     .hero-content {
-        min-height: 100vh;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 60px;
+        padding-bottom: 60px;
         display: flex;
         align-items: center;
+        min-height: auto;
+    }
+
+
+    @media (max-width: 768px) {
+        .hero-content {
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
     }
 </style>
+
+
 <div class="hero-bg"></div>
 <div class="container hero-content py-5">
     <div class="row justify-content-start">

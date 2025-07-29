@@ -27,6 +27,7 @@
 </div>
 
 @php
+    // Steps urut
     $steps = [
         'On Review' => $data->on_review_date ?? null,
         'Diajukan ke LND' => $data->lnd_date ?? null,
@@ -34,13 +35,21 @@
         'Diajukan ke Treasury' => $data->treasury_date ?? null,
         'Cleared' => $data->cleared_date ?? null,
     ];
-    $stepKeys = array_keys($steps);
-    $currentIndex = array_search($data->status, $stepKeys);
 
-    // Jika status Cleared, anggap semua step selesai
-    $isCleared = ($data->status === 'Cleared');
-    if ($currentIndex === false) $currentIndex = 0;
-    if ($isCleared) $currentIndex = count($stepKeys) - 1;
+    $stepKeys = array_keys($steps);
+
+    // Status yang aktif, pastikan cocok
+    $currentStatus = $data->status_progres_reimburse ?? 'On Review';
+
+    // Cari index step aktif
+    $currentIndex = array_search($currentStatus, $stepKeys);
+
+    if ($currentIndex === false) {
+        $currentIndex = 0;
+    }
+
+    // Apakah sudah cleared?
+    $isCleared = ($currentStatus === 'Cleared');
 @endphp
 
 <div class="bg-light rounded p-3 mb-4 shadow-sm">
@@ -49,19 +58,28 @@
         @foreach ($steps as $step => $date)
             @php
                 $index = array_search($step, $stepKeys);
-                if ($isCleared || $index < $currentIndex) {
+
+                if ($isCleared) {
+                    // Jika sudah cleared, semua step centang
+                    $statusClass = 'bg-success text-white';
+                    $circleContent = '<i class="bi bi-check-lg"></i>';
+                } elseif ($index < $currentIndex) {
+                    // Step sudah selesai
                     $statusClass = 'bg-success text-white';
                     $circleContent = '<i class="bi bi-check-lg"></i>';
                 } elseif ($index === $currentIndex) {
+                    // Step aktif
                     $statusClass = 'bg-warning text-dark';
-                    $circleContent = '<i class="bi bi-arrow-repeat"></i>'; // logo loading statis
+                    $circleContent = '<i class="bi bi-arrow-repeat"></i>';
                 } else {
+                    // Step belum mulai
                     $statusClass = 'bg-secondary text-white';
                     $circleContent = $index + 1;
                 }
-                // Tanggal hanya untuk step yang sudah selesai
+
+                // Format tanggal
                 $formattedDate = '-';
-                if (($isCleared || $index < $currentIndex) && !empty($date) && $date !== '0000-00-00') {
+                if (!empty($date) && $date !== '0000-00-00') {
                     try {
                         $formattedDate = \Carbon\Carbon::parse($date)->format('d F Y');
                     } catch (\Exception $e) {
@@ -74,9 +92,7 @@
                     {!! $circleContent !!}
                 </div>
                 <div class="fw-semibold small">{{ $step }}</div>
-                <div class="text-muted small">
-                    {{ $formattedDate }}
-                </div>
+                <div class="text-muted small">{{ $formattedDate }}</div>
             </div>
         @endforeach
     </div>

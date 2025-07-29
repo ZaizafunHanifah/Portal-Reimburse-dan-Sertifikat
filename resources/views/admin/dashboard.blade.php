@@ -1,133 +1,135 @@
-
 @extends('layouts.app')
+
 @section('dashboard-navbar')
 @endsection
-@section('title', 'Dashboard Admin')
-@section('content')
-<h2>Dashboard Reimburse</h2>
-<a href="{{ url('/admin/create') }}" class="btn btn-success mb-3">Tambah Data</a>
 
-<form method="GET" action="{{ url('/admin') }}" class="mb-3">
-    <div class="d-flex justify-content-between gap-2">
-        <!-- Search Bar di kiri -->
-        <input type="text" name="search" class="form-control" placeholder="Cari Nama, Jabatan, atau No Sertifikat..." value="{{ request('search') }}" style="max-width:220px;">
-        <!-- Filter Status & Sort di kanan -->
-        <div class="d-flex gap-2">
-            <div class="btn-group">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Status {{ request('status') ? ucfirst(request('status')) : 'All' }}
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ url('/admin') }}">All</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/admin?status=On Review') }}">On Review</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/admin?status=Diajukan ke LND') }}">Diajukan ke LND</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/admin?status=Diajukan ke Akuntansi') }}">Diajukan ke Akuntansi</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/admin?status=Diajukan ke Treasury') }}">Diajukan ke Treasury</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/admin?status=Cleared') }}">Cleared</a></li>
-                </ul>
+@section('title', 'Dashboard Reimburse')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+@endpush
+
+@section('content')
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+            <h2 class="mb-0">Dashboard Reimburse</h2>
+            <a href="{{ route('admin.create') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle me-1"></i> Tambah Data
+            </a>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ route('admin.dashboard') }}" class="mb-3">
+                <div class="row g-2">
+                    <div class="col-md-4 col-12">
+                        <input type="text" name="search" class="form-control" placeholder="Cari Nama atau NRP"
+                            value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Status</option>
+                            @foreach([
+                                'On Review' => 'On Review',
+                                'Diajukan ke LND' => 'Diajukan ke LND',
+                                'Diajukan ke Akuntansi' => 'Diajukan ke Akuntansi',
+                                'Diajukan ke Treasury' => 'Diajukan ke Treasury',
+                                'Cleared' => 'Cleared',
+                            ] as $key => $label)
+                                <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- Tombol Cari dihapus di sini -->
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-bordered dashboard-table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama</th>
+                            <th>NRP</th>
+                            <th>Jabatan</th>
+                            <th>Jenis Sertifikat</th>
+                            <th>No Sertifikat</th>
+                            <th>Tgl Pengajuan</th>
+                            <th>Tgl Terbit</th>
+                            <th>Tgl Expired</th>
+                            <th>Tgl Selesai</th>
+                            <th>Status Reimburse</th>
+                            <th class="aksi-col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($sertifikats as $item)
+                            @php
+                                $expiredDate = $item->expired ? \Carbon\Carbon::parse($item->expired) : null;
+                                $today = \Carbon\Carbon::today();
+                                $statusExpire = 'Not Available';
+
+                                if ($expiredDate) {
+                                    $willExpire = $expiredDate->copy()->subMonths(3);
+                                    if ($today->gt($expiredDate)) {
+                                        $statusExpire = 'Expired';
+                                    } elseif ($today->gte($willExpire)) {
+                                        $statusExpire = 'Will Expire';
+                                    } else {
+                                        $statusExpire = 'Active';
+                                    }
+                                }
+
+                                $statusReimburse = $item->status_progres_reimburse ?? 'On Review';
+                                $badgeClass = match($statusReimburse) {
+                                    'Cleared' => 'success',
+                                    'On Review' => 'warning text-dark',
+                                    default => 'secondary'
+                                };
+                            @endphp
+                            <tr>
+                                <td>{{ $item->nama }}</td>
+                                <td>{{ $item->nrp }}</td>
+                                <td>{{ $item->jabatan ?? '-' }}</td>
+                                <td>{{ $item->jenis_sertifikat ?? '-' }}</td>
+                                <td>{{ $item->nomor_sertifikat ?? '-' }}</td>
+                                <td>{{ $item->tanggal_pengajuan ? \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d M Y') : '-' }}</td>
+                                <td>{{ $item->terbit ? \Carbon\Carbon::parse($item->terbit)->format('d M Y') : '-' }}</td>
+                                <td>{{ $item->expired ? \Carbon\Carbon::parse($item->expired)->format('d M Y') : '-' }}</td>
+                                <td>{{ $item->cleared_date ? \Carbon\Carbon::parse($item->cleared_date)->format('d M Y') : '-' }}</td>
+                                <td>
+                                    <span class="badge bg-{{ $badgeClass }}">
+                                        {{ $statusReimburse }}
+                                    </span>
+                                </td>
+                                <td class="aksi-col">
+                                    <div class="d-flex justify-content-center align-items-center gap-1">
+                                        <a href="{{ route('admin.edit', $item->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('admin.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus data?')" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger" title="Hapus">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" class="text-center text-muted">Tidak ada data.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if(request('sort') && request('order'))
-                        @if(request('sort') == 'nama' && request('order') == 'asc')
-                            Nama (A-Z)
-                        @elseif(request('sort') == 'nama' && request('order') == 'desc')
-                            Nama (Z-A)
-                        @elseif(request('sort') == 'tanggal_pengajuan' && request('order') == 'desc')
-                            Tanggal Pengajuan (Terbaru)
-                        @elseif(request('sort') == 'tanggal_pengajuan' && request('order') == 'asc')
-                            Tanggal Pengajuan (Terlama)
-                        @else
-                            Default
-                        @endif
-                    @else
-                        Default
-                    @endif
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="{{ url('/admin?' . http_build_query(array_merge(request()->except(['sort','order']), []))) }}">
-                            Default
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ url('/admin?' . http_build_query(array_merge(request()->except(['sort','order']), ['sort'=>'nama','order'=>'asc']))) }}">
-                            Nama (A-Z)
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ url('/admin?' . http_build_query(array_merge(request()->except(['sort','order']), ['sort'=>'nama','order'=>'desc']))) }}">
-                            Nama (Z-A)
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ url('/admin?' . http_build_query(array_merge(request()->except(['sort','order']), ['sort'=>'tanggal_pengajuan','order'=>'desc']))) }}">
-                            Tanggal Pengajuan (Terbaru)
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ url('/admin?' . http_build_query(array_merge(request()->except(['sort','order']), ['sort'=>'tanggal_pengajuan','order'=>'asc']))) }}">
-                            Tanggal Pengajuan (Terlama)
-                        </a>
-                    </li>
-                </ul>
+
+            <div class="d-flex justify-content-end my-4">
+                {{ $sertifikats->withQueryString()->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
-</form>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nama</th>
-            <th>NRP</th>
-            <th>Jabatan</th>
-            <th>Jenis Sertifikat</th>
-            <th>No Sertifikat</th>
-            <th>Tanggal Pengajuan</th>
-            <th>Status</th>
-            <th>Tanggal Selesai</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($reimburses as $r)
-        <tr>
-            <td>{{ $r->nama }}</td>
-            <td>{{ $r->nrp }}</td>
-            <td>{{ $r->jabatan }}</td>
-            <td>{{ $r->jenis_sertifikat }}</td>
-            <td>{{ $r->no_sertifikat }}</td>
-            <td>{{ $r->tanggal_pengajuan }}</td>
-            <td>
-                <span class="badge {{ $r->status === 'Cleared' ? 'bg-success' : 'bg-warning text-dark' }}">
-                    {{ $r->status }}
-                </span>
-            </td>
-            <td>
-                @if($r->cleared_date)
-                    {{ \Carbon\Carbon::parse($r->cleared_date)->format('d F Y') }}
-                @else
-                    -
-                @endif
-            </td>
-            <td>
-                <a href="{{ url('/admin/'.$r->id.'/edit') }}" class="btn btn-sm btn-primary d-inline-flex align-items-center justify-content-center" style="width:32px;height:32px;padding:0;">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <form action="{{ url('/admin/'.$r->id) }}" method="post" style="display:inline;">
-                    @csrf @method('DELETE')
-                    <button onclick="return confirm('Hapus data?')" class="btn btn-sm btn-danger d-inline-flex align-items-center justify-content-center" style="width:32px;height:32px;padding:0;">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="d-flex justify-content-end my-4">
-    {{ $reimburses->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 @endsection

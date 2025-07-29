@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://127.0.0.1:8000/admin/create -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Tambah Data</title>
+    <link href="./Tambah Data_files/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Tambah Data_files/bootstrap-icons.css">
+    <style>
+        html, body {
+            min-height: 100vh;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top right, #e0e7ff, #f9fafb);
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-link.active {
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+        .main-content {
+            flex: 1 0 auto;
+            padding-bottom: 40px;
+        }
+        .navbar {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+    </style>
+    </head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="http://127.0.0.1:8000/admin/create#">Dashboard</a>
+        <div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="http://127.0.0.1:8000/admin" class="nav-link ">Dashboard Reimburse</a>
+                </li>
+                <li class="nav-item">
+                    <a href="http://127.0.0.1:8000/admin/sertifikat" class="nav-link ">Dashboard Sertifikat</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container main-content">
+    <link rel="stylesheet" href="./Tambah Data_files/admin-create-form.css">
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+        <div class="card admin-create-card">
+            <div class="card-body">
+                <h2 class="mb-4">
+                    Tambah Data Sertifikat dan Reimburse
+                </h2>
+                
+                <form id="sertifikatForm" method="post" action="http://127.0.0.1:8000/admin" class="admin-create-form">
+                    <input type="hidden" name="_token" value="wuVgOaon9H01YIImJRWWsoFSIcdRtAzInByeiGjg" autocomplete="off">                    
+                    <div class="row">
+                        
+                        
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Nama</label>
+                                <input type="text" name="nama" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>NRP</label>
+                                <input type="text" name="nrp" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Jabatan</label>
+                                <input type="text" name="jabatan" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Kapal</label>
+                                <input type="text" name="kapal" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Pemilik</label>
+                                <input type="text" name="pemilik" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Kelompok</label>
+                                <input type="text" name="kelompok" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>No KTP</label>
+                                <input type="text" name="no_ktp" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Bendera</label>
+                                <input type="text" name="bendera" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tipe</label>
+                                <input type="text" name="tipe" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Jenis Sertifikat</label>
+                                <input type="text" name="jenis_sertifikat" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Nomor Sertifikat</label>
+                                <input type="text" name="nomor_sertifikat" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Terbit</label>
+                                <input type="date" name="terbit" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Kadaluarsa</label>
+                                <input type="date" name="expired" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Pengajuan</label>
+                                <input type="date" name="tanggal_pengajuan" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal On Review</label>
+                                <input type="date" name="on_review_date" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Diajukan ke LND</label>
+                                <input type="date" name="lnd_date" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Diajukan ke Akuntansi</label>
+                                <input type="date" name="akuntansi_date" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Diajukan ke Treasury</label>
+                                <input type="date" name="treasury_date" value="" class="form-control">
+                            </div>
+                                                    <div class="col-12 col-md-6 mb-3">
+                                <label>Tanggal Cleared</label>
+                                <input type="date" name="cleared_date" value="" class="form-control">
+                            </div>
+                        
+                        
+                        <div class="col-12 col-md-6 mb-3">
+                            <label>Status Progres Reimburse</label>
+                            <select name="status_progres_reimburse" class="form-select">
+                                <option value="">-- Pilih Status --</option>
+                                                                    <option value="On Review">
+                                        On Review
+                                    </option>
+                                                                    <option value="Diajukan ke LND">
+                                        Diajukan ke LND
+                                    </option>
+                                                                    <option value="Diajukan ke Akuntansi">
+                                        Diajukan ke Akuntansi
+                                    </option>
+                                                                    <option value="Diajukan ke Treasury">
+                                        Diajukan ke Treasury
+                                    </option>
+                                                                    <option value="Cleared">
+                                        Cleared
+                                    </option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-50">
+                            Simpan Data
+                        </button>
+                                            </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<script src="./Tambah Data_files/bootstrap.bundle.min.js.download"></script>
+
+</body></html>

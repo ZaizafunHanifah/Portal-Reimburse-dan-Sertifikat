@@ -14,7 +14,6 @@
             background: radial-gradient(circle at top right, #e0e7ff, #f9fafb);
         }
         body {
-            /* fallback for browsers that don't support min-height on html */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -30,21 +29,56 @@
         .navbar {
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
+        .navbar-nav {
+            flex-direction: row !important;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 1.25rem;
+        }
+        .navbar-nav .nav-item {
+            flex: 0 0 auto;
+        }
+        .navbar-brand {
+            margin-right: 2.5rem !important;
+        }
+        .navbar-toggler {
+            display: none !important;
+        }
+        .navbar-collapse {
+            display: flex !important;
+            flex-basis: auto;
+        }
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                padding-bottom: 4px;
+            }
+            .navbar-brand {
+                margin-right: 1.25rem !important;
+            }
+        }
     </style>
     @stack('styles')
 </head>
 <body>
+{{-- 
+    Jika view mewarisi section('dashboard-navbar'), maka tampilkan navbar dashboard (admin).
+    Jika tidak, tampilkan navbar portal (publik).
+    Pastikan setiap view admin menambahkan: @section('dashboard-navbar') @endsection
+--}}
 @if(View::hasSection('dashboard-navbar'))
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container">
         <a class="navbar-brand" href="#">Dashboard</a>
-        <div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="navbar-collapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a href="{{ url('/admin') }}" class="nav-link {{ Request::is('admin') ? 'active' : '' }}">Dashboard Reimburse</a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard Reimburse</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/admin/sertifikat') }}" class="nav-link {{ Request::is('admin/sertifikat*') ? 'active' : '' }}">Dashboard Sertifikat</a>
+                    <a href="{{ route('admin.sertifikat.dashboard') }}" class="nav-link {{ request()->routeIs('admin.sertifikat.dashboard') ? 'active' : '' }}">Dashboard Sertifikat PSO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.nonpso.dashboard') }}" class="nav-link {{ request()->routeIs('admin.nonpso.dashboard') ? 'active' : '' }}">Dashboard Sertifikat Non PSO</a>
                 </li>
             </ul>
         </div>
@@ -54,11 +88,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">Portal</a>
-        <div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a></li>
-                <li class="nav-item"><a href="{{ url('/reimburse') }}" class="nav-link {{ Request::is('reimburse*') ? 'active' : '' }}">Portal Reimburse</a></li>
-                <li class="nav-item"><a href="{{ url('/sertifikat') }}" class="nav-link {{ Request::is('sertifikat*') ? 'active' : '' }}">Portal Sertifikat</a></li>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="{{ url('/') }}" class="nav-link {{ url()->current() == url('/') ? 'active' : '' }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/reimburse') }}" class="nav-link {{ request()->is('reimburse') ? 'active' : '' }}">Portal Reimburse</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/sertifikat') }}" class="nav-link {{ request()->is('sertifikat') ? 'active' : '' }}">Portal Sertifikat PSO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/sertifikat-nonpso') }}" class="nav-link {{ request()->is('sertifikat-nonpso') ? 'active' : '' }}">Portal Sertifikat Non PSO</a>
+                </li>
             </ul>
         </div>
     </div>
