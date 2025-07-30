@@ -14,7 +14,7 @@ class SertifikatController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Sertifikat::query();
+        $query = Sertifikat::where('source', 'reimburse');
 
         // Hanya data yang ada status reimburse
         $query->whereNotNull('status_progres_reimburse');
@@ -210,8 +210,29 @@ class SertifikatController extends Controller
 
     public function psoStore(Request $request)
     {
-        Sertifikat::create($request->all());
-        return redirect()->route('admin.sertifikat.dashboard')->with('success', 'Data berhasil ditambah');
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nrp' => 'required|string|max:50',
+            'jabatan' => 'nullable|string|max:100',
+            'kapal' => 'nullable|string|max:100',
+            'pemilik' => 'nullable|string|max:100',
+            'kelompok' => 'nullable|string|max:100',
+            'no_ktp' => 'nullable|string|max:100',
+            'jenis_sertifikat' => 'nullable|string|max:100',
+            'nomor_sertifikat' => 'nullable|string|max:100',
+            'tanggal_pengajuan' => 'nullable|date',
+            'terbit' => 'nullable|date',
+            'expired' => 'nullable|date',
+            'bendera' => 'nullable|string|max:100',
+            'tipe' => 'nullable|string|max:100',
+            'pelabuhan' => 'nullable|string|max:100',
+        ]);
+
+        $validated['source'] = 'pso';
+
+        Sertifikat::create($validated);
+
+        return redirect()->route('admin.sertifikat.dashboard')->with('success', 'Sertifikat PSO berhasil ditambahkan');
     }
 
     public function psoEdit($id)
@@ -248,7 +269,7 @@ class SertifikatController extends Controller
 
     public function psoIndex(Request $request)
     {
-        $query = Sertifikat::query();
+        $query = Sertifikat::where('source', 'pso');
 
         // Search
         if ($request->filled('search')) {
