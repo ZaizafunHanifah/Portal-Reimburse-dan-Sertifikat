@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <label>Jabatan</label>
-                            <select name="jabatan" class="form-control" required>
+                            <select name="jabatan" class="form-select" required>
                                 <option value="">-- Pilih Jabatan --</option>
                                 @foreach([
                                     'NAKHODA', 'MUALIM I', 'MUALIM II Sr & Yr', 'MUALIM III Sr & Yr', 'MUALIM IV',

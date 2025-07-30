@@ -35,7 +35,7 @@
                             'no_ktp' => 'No KTP',
                             'bendera' => 'Bendera',
                             'tipe' => 'Tipe',
-                            'pelabuhan' => 'Pelabuhan', // DITAMBAHKAN DI SINI
+                            'pelabuhan' => 'Pelabuhan',
                             'jenis_sertifikat' => 'Jenis Sertifikat',
                             'nomor_sertifikat' => 'Nomor Sertifikat',
                             'terbit' => 'Tanggal Terbit Sertifikat',
@@ -58,18 +58,39 @@
                             'treasury_date',
                             'cleared_date'
                         ];
+
+                        $jabatanOptions = [
+                            'NAKHODA', 'MUALIM I', 'MUALIM II Sr & Yr', 'MUALIM III Sr & Yr', 'MUALIM IV',
+                            'DOKTER', 'PERAWAT', 'PUK', 'SERANG', 'TANDIL', 'PANJARWALA', 'MISTRI',
+                            'KELASI', 'KASAP DEK', 'JURU MUDI', 'KKM', 'MASINIS I Sr', 'MASINIS I Yr',
+                            'MASINIS II', 'MASINIS III', 'MASINIS IV', 'JENANG',
+                            'PERAKIT MASAK & JURU MASAK', 'KEPALA PELAYAN', 'PELAYAN ATAU PENATU',
+                            'PERWIRA RADIO', 'ITTO', 'AHLI LISTRIK'
+                        ];
                     @endphp
 
                     <div class="row">
                         @foreach ($fields as $key => $label)
                             <div class="col-12 col-md-6 mb-3">
                                 <label>{{ $label }}</label>
-                                <input 
-                                    type="{{ in_array($key, $dateFields) ? 'date' : 'text' }}" 
-                                    name="{{ $key }}" 
-                                    value="{{ old($key, isset($sertifikat) && $sertifikat->$key ? ($dateFields && in_array($key, $dateFields) ? \Carbon\Carbon::parse($sertifikat->$key)->format('Y-m-d') : $sertifikat->$key) : '') }}" 
-                                    class="form-control"
-                                >
+                                @if($key === 'jabatan')
+                                    <select name="jabatan" class="form-select" required>
+                                        <option value="">-- Pilih Jabatan --</option>
+                                        @foreach($jabatanOptions as $jabatan)
+                                            <option value="{{ $jabatan }}"
+                                                {{ old('jabatan', isset($sertifikat) ? $sertifikat->jabatan : '') == $jabatan ? 'selected' : '' }}>
+                                                {{ $jabatan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <input 
+                                        type="{{ in_array($key, $dateFields) ? 'date' : 'text' }}" 
+                                        name="{{ $key }}" 
+                                        value="{{ old($key, isset($sertifikat) && $sertifikat->$key ? (in_array($key, $dateFields) ? \Carbon\Carbon::parse($sertifikat->$key)->format('Y-m-d') : $sertifikat->$key) : '') }}" 
+                                        class="form-control"
+                                    >
+                                @endif
                             </div>
                         @endforeach
 

@@ -22,7 +22,19 @@
                             </div>
                             <div class="col-12 col-md-6 mb-3">
                                 <label>Jabatan</label>
-                                <input type="text" name="jabatan" class="form-control" value="{{ old('jabatan') }}">
+                                <select name="jabatan" class="form-select" required>
+                                    <option value="">-- Pilih Jabatan --</option>
+                                    @foreach([
+                                        'NAKHODA', 'MUALIM I', 'MUALIM II Sr & Yr', 'MUALIM III Sr & Yr', 'MUALIM IV',
+                                        'DOKTER', 'PERAWAT', 'PUK', 'SERANG', 'TANDIL', 'PANJARWALA', 'MISTRI',
+                                        'KELASI', 'KASAP DEK', 'JURU MUDI', 'KKM', 'MASINIS I Sr', 'MASINIS I Yr',
+                                        'MASINIS II', 'MASINIS III', 'MASINIS IV', 'JENANG',
+                                        'PERAKIT MASAK & JURU MASAK', 'KEPALA PELAYAN', 'PELAYAN ATAU PENATU',
+                                        'PERWIRA RADIO', 'ITTO', 'AHLI LISTRIK'
+                                    ] as $jabatan)
+                                        <option value="{{ $jabatan }}" {{ old('jabatan') == $jabatan ? 'selected' : '' }}>{{ $jabatan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-12 col-md-6 mb-3">
                                 <label>Kapal</label>
