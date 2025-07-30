@@ -14,11 +14,8 @@ class SertifikatController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Sertifikat::where('source', 'reimburse');
-
-        // Hanya data yang ada status reimburse
-        $query->whereNotNull('status_progres_reimburse');
-
+        $query = Sertifikat::where('source', 'reimburse')
+                   ->whereNotNull('status_progres_reimburse');
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
