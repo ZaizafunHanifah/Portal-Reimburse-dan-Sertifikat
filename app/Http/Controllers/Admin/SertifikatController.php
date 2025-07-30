@@ -283,19 +283,26 @@ class SertifikatController extends Controller
 
     public function psoIndex(Request $request)
     {
-        $query = Sertifikat::whereIn('source', ['pso', 'reimburse']);
+        // Ambil data dari reimburse ATAU dari pso yang tidak punya status_progres_reimburse (murni PSO)
+        $query = Sertifikat::where(function ($q) {
+            $q->where('source', 'reimburse')
+            ->orWhere(function ($q2) {
+                $q2->where('source', 'pso')
+                    ->whereNull('status_progres_reimburse');
+            });
+        });
 
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('nama', 'like', "%$search%")
-                  ->orWhere('nrp', 'like', "%$search%")
-                  ->orWhere('jenis_sertifikat', 'like', "%$search%");
+                ->orWhere('nrp', 'like', "%$search%")
+                ->orWhere('jenis_sertifikat', 'like', "%$search%");
             });
         }
 
-        // (Optional) Filter status
+        // Filter status expired
         if ($request->filled('status')) {
             $status = $request->status;
             $today = now()->startOfDay();
@@ -316,14 +323,15 @@ class SertifikatController extends Controller
             }
         }
 
-        // Ambil semua data dulu, lalu sort by status_expire
+        // Ambil semua data lalu proses status_expire
         $sertifikats = $query->get();
 
-        // Tambahkan status_expire dan urutkan
+        // Tambahkan status_expire
         $now = \Carbon\Carbon::today();
         $sertifikats = $sertifikats->map(function($item) use ($now) {
             $expiredDate = $item->expired ? \Carbon\Carbon::parse($item->expired) : null;
             $statusExpire = 'Not Available';
+
             if ($expiredDate) {
                 $willExpire = $expiredDate->copy()->subMonths(3);
                 if ($now->gt($expiredDate)) {
@@ -334,17 +342,19 @@ class SertifikatController extends Controller
                     $statusExpire = 'Active';
                 }
             }
+
             $item->status_expire = $statusExpire;
             return $item;
         });
 
-        // Urutkan: Kadaluarsa, Akan Kadaluarsa, Aktif, Tidak Tersedia
+        // Urutkan berdasarkan status kadaluarsa
         $statusOrder = [
             'Expired' => 0,
             'Will Expire' => 1,
             'Active' => 2,
             'Not Available' => 3,
         ];
+
         $sertifikats = $sertifikats->sortBy(function($item) use ($statusOrder) {
             return $statusOrder[$item->status_expire] ?? 99;
         })->values();
@@ -362,4 +372,5 @@ class SertifikatController extends Controller
 
         return view('admin.pso-dashboard', ['sertifikats' => $paginated]);
     }
+
 }
