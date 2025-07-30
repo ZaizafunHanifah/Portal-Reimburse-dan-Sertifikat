@@ -27,7 +27,7 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
             <h2 class="mb-0 fw-bold">Sertifikat Non-PSO</h2>
             <a href="{{ route('admin.nonpso.create') }}" class="btn btn-success">
-                <i class="bi bi-plus-lg"></i> Tambah Data
+                <i class="bi bi-plus-circle me-1"></i> Tambah Data
             </a>
         </div>
         <div class="card-body">
