@@ -104,9 +104,5 @@
         </div>
         @endif
     @endif
-@else
-    <div class="alert alert-info">
-        Masukkan NIK untuk melihat data sertifikat.
-    </div>
 @endif
 @endsection

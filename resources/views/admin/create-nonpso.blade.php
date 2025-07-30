@@ -53,6 +53,18 @@
                                 <input type="text" name="no_ktp" class="form-control" value="{{ old('no_ktp') }}">
                             </div>
                             <div class="col-12 col-md-6 mb-3">
+                                <label>Bendera</label>
+                                <input type="text" name="bendera" class="form-control" value="{{ old('bendera') }}">
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label>Tipe</label>
+                                <input type="text" name="tipe" class="form-control" value="{{ old('tipe') }}">
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label>Pelabuhan</label>
+                                <input type="text" name="pelabuhan" class="form-control" value="{{ old('pelabuhan') }}">
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
                                 <label>Jenis Sertifikat</label>
                                 <input type="text" name="jenis_sertifikat" class="form-control" value="{{ old('jenis_sertifikat') }}">
                             </div>
@@ -71,18 +83,6 @@
                             <div class="col-12 col-md-6 mb-3">
                                 <label>Tanggal Expired</label>
                                 <input type="date" name="expired" class="form-control" value="{{ old('expired') }}">
-                            </div>
-                            <div class="col-12 col-md-6 mb-3">
-                                <label>Bendera</label>
-                                <input type="text" name="bendera" class="form-control" value="{{ old('bendera') }}">
-                            </div>
-                            <div class="col-12 col-md-6 mb-3">
-                                <label>Tipe</label>
-                                <input type="text" name="tipe" class="form-control" value="{{ old('tipe') }}">
-                            </div>
-                            <div class="col-12 col-md-6 mb-3">
-                                <label>Pelabuhan</label>
-                                <input type="text" name="pelabuhan" class="form-control" value="{{ old('pelabuhan') }}">
                             </div>
                         </div>
                         <button class="btn btn-success w-100 mt-3">Simpan</button>
