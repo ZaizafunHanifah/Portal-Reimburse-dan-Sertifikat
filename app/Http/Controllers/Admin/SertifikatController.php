@@ -93,12 +93,26 @@ class SertifikatController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required',
-            'nrp' => 'required',
-            // tambahkan validasi sesuai kebutuhan
+            'nama' => 'required|string|max:255',
+            'nrp' => 'required|string|max:50',
+            'jabatan' => 'nullable|string|max:100',
+            'kapal' => 'nullable|string|max:100',
+            'pemilik' => 'nullable|string|max:100',
+            'kelompok' => 'nullable|string|max:100',
+            'no_ktp' => 'nullable|string|max:100',
+            'jenis_sertifikat' => 'nullable|string|max:100',
+            'nomor_sertifikat' => 'nullable|string|max:100',
+            'tanggal_pengajuan' => 'nullable|date',
+            'terbit' => 'nullable|date',
+            'expired' => 'nullable|date',
+            'bendera' => 'nullable|string|max:100',
+            'tipe' => 'nullable|string|max:100',
+            'pelabuhan' => 'nullable|string|max:100',
         ]);
 
-        Sertifikat::create($request->all());
+        $validated['source'] = 'reimburse';
+
+        Sertifikat::create($validated);
 
         return redirect()->route('admin.dashboard')->with('success', 'Data berhasil disimpan!');
     }
@@ -269,7 +283,7 @@ class SertifikatController extends Controller
 
     public function psoIndex(Request $request)
     {
-        $query = Sertifikat::where('source', 'pso');
+        $query = Sertifikat::whereIn('source', ['pso', 'reimburse']);
 
         // Search
         if ($request->filled('search')) {
