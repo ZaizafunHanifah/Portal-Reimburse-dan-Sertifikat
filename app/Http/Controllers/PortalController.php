@@ -163,7 +163,9 @@ class PortalController extends Controller
 
         $data = null;
         if ($noSertifikat) {
-            $data = Sertifikat::where('nomor_sertifikat', $noSertifikat)->first();
+            $data = Sertifikat::where('nomor_sertifikat', $noSertifikat)
+                  ->where('source', 'reimburse') 
+                  ->first();
         }
 
         return view('reimburse.index', compact('data'));
