@@ -108,6 +108,7 @@ class SertifikatController extends Controller
         ]);
 
         $validated['source'] = 'reimburse';
+        $validated['status_progres_reimburse'] = 'On Review';
 
         Sertifikat::create($validated);
 
