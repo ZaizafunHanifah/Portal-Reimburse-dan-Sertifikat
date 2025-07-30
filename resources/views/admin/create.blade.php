@@ -10,6 +10,8 @@
                 <h2 class="mb-4">Tambah Data Reimburse</h2>
                 <form method="post" action="{{ url('/admin') }}">
                     @csrf
+                    <!-- Hidden input agar data selalu bertipe reimburse -->
+                    <input type="hidden" name="source" value="reimburse">
                     <div class="row">
                         {{-- Data Umum --}}
                         <div class="col-12 mb-3">

@@ -10,6 +10,8 @@
                 <h2 class="mb-4 fw-bold text-center">Tambah Sertifikat PSO</h2>
                 <form method="post" action="{{ route('admin.sertifikat.store') }}">
                     @csrf
+                    <!-- Tambahkan hidden input agar source selalu 'pso' -->
+                    <input type="hidden" name="source" value="pso">
                     <div class="row">
                         <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Nama</label>
