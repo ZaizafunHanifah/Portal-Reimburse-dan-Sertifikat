@@ -80,6 +80,10 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.nonpso.dashboard') }}" class="nav-link {{ request()->routeIs('admin.nonpso.dashboard') ? 'active' : '' }}">Dashboard Sertifikat Non PSO</a>
                 </li>
+                <!-- Link Pegawai untuk dashboard/admin -->
+                <li class="nav-item">
+                    <a href="{{ route('pegawai.index') }}" class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">Pegawai</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -101,6 +105,10 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/sertifikat-nonpso') }}" class="nav-link {{ request()->is('sertifikat-nonpso') ? 'active' : '' }}">Portal Sertifikat Non PSO</a>
+                </li>
+                <!-- Link Pegawai untuk portal/publik -->
+                <li class="nav-item">
+                    <a href="{{ route('pegawai.index') }}" class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">Pegawai</a>
                 </li>
             </ul>
         </div>
