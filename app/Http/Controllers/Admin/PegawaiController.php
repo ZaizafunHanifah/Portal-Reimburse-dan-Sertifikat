@@ -14,7 +14,7 @@ class PegawaiController extends Controller
     public function index()
     {
         $pegawais = Pegawai::orderBy('nama')->paginate(20);
-        return view('admin.pegawai_dashboard', compact('pegawais'));
+        return view('admin.pegawai-dashboard', compact('pegawais'));
     }
 
     public function store(Request $request)
