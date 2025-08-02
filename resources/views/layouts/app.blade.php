@@ -82,7 +82,7 @@
                 </li>
                 <!-- Link Pegawai untuk dashboard/admin -->
                 <li class="nav-item">
-                    <a href="{{ route('pegawai.index') }}" class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">Pegawai</a>
+                    <a href="{{ route('admin.pegawai.index') }}" class="nav-link {{ request()->routeIs('admin.pegawai.*') ? 'active' : '' }}">Pegawai</a>
                 </li>
             </ul>
         </div>
@@ -108,7 +108,7 @@
                 </li>
                 <!-- Link Pegawai untuk portal/publik -->
                 <li class="nav-item">
-                    <a href="{{ route('pegawai.index') }}" class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">Pegawai</a>
+                    <a href="{{ route('admin.pegawai.index') }}" class="nav-link {{ request()->routeIs('admin.pegawai.*') ? 'active' : '' }}">Pegawai</a>
                 </li>
             </ul>
         </div>
